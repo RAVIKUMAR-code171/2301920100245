@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const PRIORITY = {
+  Placement: { label: "HIGH", color: "#16a34a" },
+  Result: { label: "MEDIUM", color: "#2563eb" },
+  Event: { label: "LOW", color: "#ca8a04" }
+};
+
 export default function App() {
   const [notifications, setNotifications] = useState([]);
   const [filter, setFilter] = useState("All");
@@ -18,6 +24,7 @@ export default function App() {
   return (
     <div style={{ maxWidth: "800px", margin: "0 auto", padding: "20px", fontFamily: "sans-serif" }}>
       <h1>Campus Notifications</h1>
+      <p style={{ color: "#6b7280" }}>{notifications.length} notifications loaded</p>
 
       <div style={{ marginBottom: "16px", display: "flex", gap: "8px" }}>
         {["All", "Placement", "Result", "Event"].map((type) => (
@@ -52,8 +59,19 @@ export default function App() {
               background: n.Type === "Placement" ? "#f0fdf4" : n.Type === "Result" ? "#eff6ff" : "#fefce8"
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span style={{ fontWeight: "bold" }}>{n.Type}</span>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                <span style={{ fontWeight: "bold" }}>{n.Type}</span>
+                <span style={{
+                  fontSize: "11px",
+                  padding: "2px 8px",
+                  borderRadius: "99px",
+                  background: PRIORITY[n.Type]?.color,
+                  color: "white"
+                }}>
+                  {PRIORITY[n.Type]?.label}
+                </span>
+              </div>
               <span style={{ fontSize: "12px", color: "#6b7280" }}>{n.Timestamp}</span>
             </div>
             <p style={{ margin: "8px 0 0" }}>{n.Message}</p>
